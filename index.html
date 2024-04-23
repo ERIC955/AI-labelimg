@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <style>
+        .image-container {
+            width: 500px;
+            height: 500px; 
+            background-image: url("/123.png"); 
+            background-size: cover; 
+            margin: 0 auto;
+            display: flex;
+            z-index: 10000;
+        }   
+    </style>
+</head>
+<body>
+    <div class="image-container"></div>
+    <select class="form-select select w-50 mx-auto  " aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+    <div class="to"></div>
+</body>
+
+<script>
+
+let train = []
+
+let select = document.querySelector('.select');
+let img = document.querySelector('.image-container');
+let to = document.querySelector('.to');
+
+imgHeight = img.offsetHeight;
+imgWidth = img.offsetWidth;
+
+
+let downX, downY,upX,upY, w, h,xCenter,yCenter,width ,height,square;
+
+img.addEventListener('mousedown', function(event) {
+    downX = event.clientX;
+    downY = event.clientY;
+    square = document.createElement('div');
+    square.style.position = 'absolute';
+    square.style.border = '5px solid red';
+    square.style.pointerEvents = 'none';   //防止被點擊
+    square.style.zIndex = '10000';
+    document.body.appendChild(square);
+
+});
+
+img.addEventListener('mousemove', function(event) {
+    if (event.buttons === 1 && square) { 
+        let printX = event.clientX;
+        let printY = event.clientY;
+        let toW = printX - downX;
+        let toH = printY - downY;
+        w = toW
+        h = toH
+        // 更新方框的位置和大小
+        square.style.left = downX + 'px';
+        square.style.top = downY + 'px';
+        square.style.width = toW + 'px';
+        square.style.height = toH + 'px';
+    }
+});
+
+img.addEventListener('mouseup', function(event) {
+        upX = event.clientX;
+        upY = event.clientY;
+        xCenter = (downX + w / 2) / imgWidth;
+        yCenter = (downY + h / 2) / imgHeight;
+        width = w / imgWidth;
+        height = h / imgHeight;
+
+        
+});
+select.addEventListener('change', (event)=> {
+    classID = event.target.value;
+    let yoloLabel = `${classID} ${xCenter} ${yCenter} ${width} ${height}`;
+    train.push(yoloLabel);
+    to.innerHTML += `<div class="mx-auto w-50 d-flex" >${yoloLabel}</div>`;
+    yoloLabel = '';
+    event.target.value = ''; 
+});
+
+
+</script>
+</html>
